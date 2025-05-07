@@ -13,7 +13,7 @@ export default function DashboardPage() {
   const [user, setUser] = useState<any>(null);
   const [messages, setMessages] = useState<any[]>([]);
 // Si no usas `error`, elimina la declaración:
-const [error, setError] = useState<string | null>(null);
+const [error] = useState<string | null>(null);
 
 // O si realmente necesitas manejar el error:
 if (error) {
