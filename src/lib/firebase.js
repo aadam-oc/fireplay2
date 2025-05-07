@@ -12,7 +12,6 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_APP_ID,
 };
 
-// Solo inicializar si no está ya inicializado
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
 
 const auth = getAuth(app);

@@ -1,4 +1,3 @@
-// types.ts (o lib/types.ts)
 export interface Game {
     id: number;
     name: string;

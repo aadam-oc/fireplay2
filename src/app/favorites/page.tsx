@@ -5,10 +5,8 @@ import Link from 'next/link';
 
 export default function FavoritesPage() {
   const { favoriteItems, removeFromFavorites } = useFavorites();
-// Si no usas `error`, elimina la declaración:
 const [error] = useState<string | null>(null);
 
-// O si realmente necesitas manejar el error:
 if (error) {
   return <p>Ha ocurrido un error: {error}</p>;
 }

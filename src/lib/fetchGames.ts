@@ -2,7 +2,7 @@
 
 export const fetchGames = async () => {
     try {
-      const apiKey = '5b460f329570497896d199a93ada88bd'; // tu clave de API
+      const apiKey = '5b460f329570497896d199a93ada88bd'; 
       const response = await fetch(`https://api.rawg.io/api/games?key=${apiKey}`);
   
       if (!response.ok) {

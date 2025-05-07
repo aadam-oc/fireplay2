@@ -6,10 +6,8 @@ import { Game } from '@/types/game';
 export default function CartPage() {
   const { cartItems, removeFromCart, clearCart } = useCart();
   const total = cartItems.reduce((sum, game) => sum + (game.rating * 10 + 20), 0);
-  // Si no usas `error`, elimina la declaración:
   const [error] = useState<string | null>(null);
 
-  // O si realmente necesitas manejar el error:
   if (error) {
     return <p>Ha ocurrido un error: {error}</p>;
   }

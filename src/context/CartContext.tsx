@@ -19,23 +19,19 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cartItems, setCartItems] = useState<Game[]>([]);
   const [user, setUser] = useState<any>(null);
 
-  // Detectar usuario logueado
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        // Cargar carrito desde Firestore
         const docRef = doc(db, 'carts', currentUser.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const firestoreCart = docSnap.data().items || [];
-          // Si el carrito en Firestore tiene más elementos o es distinto, actualizar el estado
           if (JSON.stringify(cartItems) !== JSON.stringify(firestoreCart)) {
             setCartItems(firestoreCart);
           }
         }
       } else {
-        // Cargar desde localStorage si el usuario no está logueado
         const localData = localStorage.getItem('cart');
         if (localData) {
           setCartItems(JSON.parse(localData));
@@ -46,7 +42,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     return () => unsubscribe();
   }, []);
 
-// Guardar carrito en Firestore o localStorage
 useEffect(() => {
     if (user) {
       const saveToFirestore = async () => {

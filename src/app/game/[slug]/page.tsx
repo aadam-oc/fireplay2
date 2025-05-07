@@ -9,7 +9,6 @@ export default function GameDetailsPage() {
   const [game, setGame] = useState<any>(null);
 
   useEffect(() => {
-    // Verificamos si slug es un arreglo o una cadena y lo manejamos como una cadena
     const gameSlug = Array.isArray(slug) ? slug[0] : slug;
 
     if (gameSlug) {

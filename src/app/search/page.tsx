@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { fetchGames } from '@/lib/fetchGames'; // Esta es una función personalizada para obtener juegos de la API
+import { fetchGames } from '@/lib/fetchGames'; 
 import Link from 'next/link';
-import { useCart } from '@/context/CartContext'; // Aquí estamos importando el contexto de carrito
-import { useFavorites } from '@/context/FavoritesContext'; // Importamos el contexto de favoritos
+import { useCart } from '@/context/CartContext'; 
+import { useFavorites } from '@/context/FavoritesContext'; 
 
 interface Game {
   id: number;
@@ -15,13 +15,12 @@ interface Game {
 }
 
 export default function SearchPage() {
-  const [games, setGames] = useState<Game[]>([]); // Juegos obtenidos desde la API
-  const [loading, setLoading] = useState(true); // Estado para saber si estamos cargando los juegos
-  const [searchTerm, setSearchTerm] = useState(''); // Estado para el término de búsqueda
-  const { addToCart } = useCart(); // Usamos el hook para acceder a la función addToCart
-  const { addToFavorites } = useFavorites(); // Usamos el hook para acceder a la función addToFavorites
+  const [games, setGames] = useState<Game[]>([]); 
+  const [loading, setLoading] = useState(true); 
+  const [searchTerm, setSearchTerm] = useState(''); 
+  const { addToCart } = useCart(); 
+  const { addToFavorites } = useFavorites();
 
-  // Filtrar juegos en base al término de búsqueda
   const filteredGames = games.filter(game =>
     game.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -41,13 +40,12 @@ export default function SearchPage() {
         Resultados de Búsqueda
       </h1>
 
-      {/* Campo de búsqueda */}
       <div className="mb-6 flex justify-center">
         <input
           type="text"
           placeholder="Buscar juegos..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)} // Actualizamos el término de búsqueda
+          onChange={(e) => setSearchTerm(e.target.value)}
           className="px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-lg w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
         />
       </div>

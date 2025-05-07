@@ -19,7 +19,6 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true); // 👈
 
-  // Detectar usuario logueado y cargar favoritos
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
