@@ -1,14 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
 import { auth } from '@/lib/firebase';
-import { signOut } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 
 export function Footer() {
-    const router = useRouter();
-  const pathname = usePathname();
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {

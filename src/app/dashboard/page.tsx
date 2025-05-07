@@ -12,7 +12,13 @@ export default function DashboardPage() {
   const { favoriteItems } = useFavorites();
   const [user, setUser] = useState<any>(null);
   const [messages, setMessages] = useState<any[]>([]);
+// Si no usas `error`, elimina la declaración:
+const [error, setError] = useState<string | null>(null);
 
+// O si realmente necesitas manejar el error:
+if (error) {
+  return <p>Ha ocurrido un error: {error}</p>;
+}
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);

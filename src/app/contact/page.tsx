@@ -7,8 +7,13 @@ import { collection, addDoc, Timestamp } from 'firebase/firestore';
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState('');
+// Si no usas `error`, elimina la declaración:
+const [error, setError] = useState<string | null>(null);
 
+// O si realmente necesitas manejar el error:
+if (error) {
+  return <p>Ha ocurrido un error: {error}</p>;
+}
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };

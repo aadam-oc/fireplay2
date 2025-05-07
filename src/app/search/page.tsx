@@ -5,103 +5,107 @@ import { fetchGames } from '@/lib/fetchGames'; // Esta es una función personali
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext'; // Aquí estamos importando el contexto de carrito
 import { useFavorites } from '@/context/FavoritesContext'; // Importamos el contexto de favoritos
+import Image from 'next/image';
+
 
 interface Game {
-  id: number;
-  name: string;
-  background_image: string;
-  rating: number;
-  slug: string;
+    id: number;
+    name: string;
+    background_image: string;
+    rating: number;
+    slug: string;
 }
 
 export default function SearchPage() {
-  const [games, setGames] = useState<Game[]>([]); // Juegos obtenidos desde la API
-  const [loading, setLoading] = useState(true); // Estado para saber si estamos cargando los juegos
-  const [searchTerm, setSearchTerm] = useState(''); // Estado para el término de búsqueda
-  const { addToCart } = useCart(); // Usamos el hook para acceder a la función addToCart
-  const { addToFavorites } = useFavorites(); // Usamos el hook para acceder a la función addToFavorites
+    const [games, setGames] = useState<Game[]>([]); // Juegos obtenidos desde la API
+    const [loading, setLoading] = useState(true); // Estado para saber si estamos cargando los juegos
+    const [searchTerm, setSearchTerm] = useState(''); // Estado para el término de búsqueda
+    const { addToCart } = useCart(); // Usamos el hook para acceder a la función addToCart
+    const { addToFavorites } = useFavorites(); // Usamos el hook para acceder a la función addToFavorites
 
-  // Filtrar juegos en base al término de búsqueda
-  const filteredGames = games.filter(game =>
-    game.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+    // Filtrar juegos en base al término de búsqueda
+    const filteredGames = games.filter(game =>
+        game.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
-  useEffect(() => {
-    const loadGames = async () => {
-      const data = await fetchGames();
-      setGames(data);
-      setLoading(false);
-    };
-    loadGames();
-  }, []);
+    useEffect(() => {
+        const loadGames = async () => {
+            const data = await fetchGames();
+            setGames(data);
+            setLoading(false);
+        };
+        loadGames();
+    }, []);
 
-  return (
-    <div className="px-4 md:px-12 py-10">
-      <h1 className="text-3xl font-bold text-center text-zinc-900 dark:text-zinc-100 mb-6">
-        Resultados de Búsqueda
-      </h1>
+    return (
+        <div className="px-4 md:px-12 py-10">
+            <h1 className="text-3xl font-bold text-center text-zinc-900 dark:text-zinc-100 mb-6">
+                Resultados de Búsqueda
+            </h1>
 
-      {/* Campo de búsqueda */}
-      <div className="mb-6 flex justify-center">
-        <input
-          type="text"
-          placeholder="Buscar juegos..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)} // Actualizamos el término de búsqueda
-          className="px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-lg w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-        />
-      </div>
-
-      {loading ? (
-        <div className="text-center text-xl text-zinc-500">Cargando...</div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredGames.length === 0 ? (
-            <div className="col-span-full text-center text-lg text-zinc-500">
-              No se encontraron juegos para esa búsqueda.
-            </div>
-          ) : (
-            filteredGames.map((game) => (
-              <div
-                key={game.id}
-                className="relative bg-white dark:bg-zinc-800 rounded-lg shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
-              >
-                <img
-                  src={game.background_image}
-                  alt={game.name}
-                  className="w-full h-48 object-cover rounded-t-lg"
+            {/* Campo de búsqueda */}
+            <div className="mb-6 flex justify-center">
+                <input
+                    type="text"
+                    placeholder="Buscar juegos..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)} // Actualizamos el término de búsqueda
+                    className="px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-lg w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                 />
-                <div className="p-4">
-                  <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
-                    {game.name}
-                  </h2>
-                  <p className="text-zinc-600 dark:text-zinc-400 mt-2">Rating: {game.rating}</p>
-                  <div className="mt-4 flex flex-col gap-3">
-                    <Link
-                      href={`/product-sheet/${game.slug}`}
-                      className="text-blue-500 hover:text-blue-700 transition-colors"
-                    >
-                      Ver detalles
-                    </Link>
-                    <button
-                      onClick={() => addToCart(game)}
-                      className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-all duration-200"
-                    >
-                      Añadir al carrito
-                    </button>
-                    <button
-                      onClick={() => addToFavorites(game)}
-                      className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-all duration-200"
-                    >
-                      Añadir a favoritos
-                    </button>
-                  </div>
+            </div>
+
+            {loading ? (
+                <div className="text-center text-xl text-zinc-500">Cargando...</div>
+            ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {filteredGames.length === 0 ? (
+                        <div className="col-span-full text-center text-lg text-zinc-500">
+                            No se encontraron juegos para esa búsqueda.
+                        </div>
+                    ) : (
+                        filteredGames.map((game) => (
+                            <div
+                                key={game.id}
+                                className="relative bg-white dark:bg-zinc-800 rounded-lg shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                            >
+                                <Image
+                                    src={game.background_image}
+                                    alt={game.name}
+                                    width={500}
+                                    height={300}
+                                    className="w-full h-48 object-cover"
+                                />
+                                <div className="p-4">
+                                    <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+                                        {game.name}
+                                    </h2>
+                                    <p className="text-zinc-600 dark:text-zinc-400 mt-2">Rating: {game.rating}</p>
+                                    <div className="mt-4 flex flex-col gap-3">
+                                        <Link
+                                            href={`/product-sheet/${game.slug}`}
+                                            className="text-blue-500 hover:text-blue-700 transition-colors"
+                                        >
+                                            Ver detalles
+                                        </Link>
+                                        <button
+                                            onClick={() => addToCart(game)}
+                                            className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-all duration-200"
+                                        >
+                                            Añadir al carrito
+                                        </button>
+                                        <button
+                                            onClick={() => addToFavorites(game)}
+                                            className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-all duration-200"
+                                        >
+                                            Añadir a favoritos
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    )}
                 </div>
-              </div>
-            ))
-          )}
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 }

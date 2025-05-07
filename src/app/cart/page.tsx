@@ -6,7 +6,13 @@ import { Game } from '@/types/game';
 export default function CartPage() {
   const { cartItems, removeFromCart, clearCart } = useCart();
   const total = cartItems.reduce((sum, game) => sum + (game.rating * 10 + 20), 0);
+  // Si no usas `error`, elimina la declaración:
+  const [error, setError] = useState<string | null>(null);
 
+  // O si realmente necesitas manejar el error:
+  if (error) {
+    return <p>Ha ocurrido un error: {error}</p>;
+  }
   return (
     <div className="max-w-3xl mx-auto px-6 py-10">
       <h1 className="text-3xl font-semibold mb-8 text-zinc-900 dark:text-zinc-100">Tu carrito</h1>
@@ -60,3 +66,7 @@ export default function CartPage() {
     </div>
   );
 }
+function useState<T>(arg0: null): [any, any] {
+  throw new Error('Function not implemented.');
+}
+
