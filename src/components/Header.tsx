@@ -1,3 +1,5 @@
+// src/components/Header.tsx
+
 'use client';
 
 import Link from 'next/link';
@@ -30,12 +32,16 @@ export function Header() {
           Fireplay
         </Link>
         <nav className="space-x-4">
-          <Link href="/games" className={pathname === '/games' ? 'underline' : ''}>Juegos</Link>
+          <Link href="/games" className={pathname === '/games' ? 'underline' : ''}>Todos los juegos</Link>
+          <Link href="/search" className={pathname === '/search' ? 'underline' : ''}>Buscar Juegos</Link> {/* Nuevo enlace */}
           <Link href="/favorites" className={pathname === '/favorites' ? 'underline' : ''}>Favoritos</Link>
+          <Link href="/contact" className={pathname === '/contact' ? 'underline' : ''}>Contacto</Link>
           <Link href="/cart" className={pathname === '/cart' ? 'underline' : ''}>Carrito</Link>
           {user ? (
             <>
-              <span className="ml-2">Hola, {user.displayName || user.email}</span>
+              <Link href="/dashboard" className={pathname === '/dashboard' ? 'underline' : ''}>
+
+              <span className="ml-2">Hola, {user.displayName || user.email}</span></Link>
               <button onClick={handleLogout} className="ml-4 underline">Salir</button>
             </>
           ) : (

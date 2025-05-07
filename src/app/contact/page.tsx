@@ -1,31 +1,72 @@
-// app/contact/page.tsx
 'use client';
 
 import { useState } from 'react';
-import { firestore } from '@/lib/firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
 
 export default function ContactPage() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  
+  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+    if (!form.name || !form.email || !form.message) {
+      setError('Todos los campos son obligatorios');
+      return;
+    }
+
     try {
-      await addDoc(collection(firestore, 'messages'), { name, email, message });
-      alert('Mensaje enviado');
-    } catch (error) {
-      alert('Error al enviar el mensaje');
+      await addDoc(collection(db, 'messages'), {
+        ...form,
+        createdAt: Timestamp.now(),
+      });
+      setSuccess(true);
+      setForm({ name: '', email: '', message: '' });
+    } catch (err: any) {
+      console.error('Error al enviar:', err);
+      setError('No se pudo enviar el mensaje');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Nombre" required className="w-full p-2 border rounded" />
-      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Correo" required className="w-full p-2 border rounded" />
-      <textarea value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Mensaje" required className="w-full p-2 border rounded" />
-      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Enviar</button>
-    </form>
+    <div className="max-w-xl mx-auto py-10 px-4">
+      <h1 className="text-2xl font-bold mb-4">Contáctanos</h1>
+      {success && <p className="text-green-600 mb-4">Mensaje enviado con éxito</p>}
+      {error && <p className="text-red-600 mb-4">{error}</p>}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <input
+          name="name"
+          placeholder="Nombre"
+          className="w-full border p-2 rounded"
+          value={form.name}
+          onChange={handleChange}
+        />
+        <input
+          name="email"
+          type="email"
+          placeholder="Correo electrónico"
+          className="w-full border p-2 rounded"
+          value={form.email}
+          onChange={handleChange}
+        />
+        <textarea
+          name="message"
+          placeholder="Mensaje"
+          className="w-full border p-2 rounded"
+          rows={5}
+          value={form.message}
+          onChange={handleChange}
+        />
+        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
+          Enviar
+        </button>
+      </form>
+    </div>
   );
 }
